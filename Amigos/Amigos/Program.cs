@@ -26,6 +26,8 @@ namespace Amigos
             builder.Services.AddControllersWithViews()
                 .AddViewLocalization();
 
+            builder.Services.AddCors();
+
             builder.Services.AddSingleton<IInc, IncImpl>();
             // builder.Services.AddTransient<IInc, IncImpl>();
 
@@ -33,6 +35,14 @@ namespace Amigos
             builder.Services.AddDbContext<AmigoDBContext>(options => options.UseSqlite("Data Source=Amigos.db"));
 
             var app = builder.Build();
+
+            // CORS antes que el resto del pipeline
+            app.UseCors(builder => builder
+                .SetIsOriginAllowed((host) => true)
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials()
+            );
 
             app.UseRequestLocalization(localizationOptions);
 
