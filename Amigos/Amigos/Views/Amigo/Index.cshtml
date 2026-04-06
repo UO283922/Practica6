@@ -1,0 +1,69 @@
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+@model Amigos.Models.AmigoDistanciaViewModel
+
+@{
+    ViewData["Title"] = Localizer["Titulo"];
+}
+
+<h1>@Localizer["Titulo"]</h1>
+
+<p>
+    <a asp-action="Create">@Localizer["AnadirNuevo"]</a>
+</p>
+
+<form asp-controller="Amigo" asp-action="Index" method="get">
+    <p>
+        <label>
+            @Localizer["Latitud"]:
+            <input type="text" name="latitud" value="@Model.Latitud" />
+        </label>
+
+        <label>
+            @Localizer["Longitud"]:
+            <input type="text" name="longitud" value="@Model.Longitud" />
+        </label>
+
+        <label>
+            @Localizer["DistanciaMaximaKm"]:
+            <input type="number" step="any" name="distanciaMaxKm" value="@Model.DistanciaMaxKm" />
+        </label>
+
+        <input type="submit" value="@Localizer["Filtrar"]" />
+        <a asp-action="Index">@Localizer["VerTodos"]</a>
+    </p>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Localizer["Nombre"]</th>
+            <th>@Localizer["Latitud"]</th>
+            <th>@Localizer["Longitud"]</th>
+            <th>@Localizer["Acciones"]</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Amigos != null && Model.Amigos.Any())
+        {
+            @foreach (var item in Model.Amigos)
+            {
+                <tr>
+                    <td>@item.name</td>
+                    <td>@item.lati</td>
+                    <td>@item.longi</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.ID">@Localizer["Editar"]</a> |
+                        <a asp-action="Details" asp-route-id="@item.ID">@Localizer["Detalles"]</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ID">@Localizer["Eliminar"]</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="4">@Localizer["SinAmigos"]</td>
+            </tr>
+        }
+    </tbody>
+</table>
