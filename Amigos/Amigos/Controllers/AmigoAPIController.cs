@@ -68,6 +68,21 @@ namespace Amigos.Controllers
             return NoContent();
         }
 
+        // PUT: api/amigo/byname/{name}
+        [HttpPut("byname/{name}")]
+        public async Task<IActionResult> PutAmigoByName(string name, Amigo amigo)
+        {
+            var amigoDB = await _context.Amigos!.FirstOrDefaultAsync(a => a.name == name);
+            if (amigoDB == null)
+            {
+                return NotFound();
+            }
+            amigoDB.lati = amigo.lati;
+            amigoDB.longi = amigo.longi;
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
         // POST: api/amigo
         [HttpPost]
         public async Task<ActionResult<Amigo>> PostAmigo(Amigo amigo)
